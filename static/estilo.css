@@ -17,8 +17,22 @@
   --fonte-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --fonte-texto: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
 
+  /* Escalas do mapa (verde: quantos editais abertos) e do calendário (âmbar: quantos encerram). */
+  --mapa-0: #e9ecea;
+  --mapa-1: #d3ebe1;
+  --mapa-2: #a8d5c2;
+  --mapa-3: #6fb89d;
+  --mapa-4: #2f9374;
+  --mapa-5: #0f6b52;
+  --dia-1: #fbefdc;
+  --dia-2: #f5d9ad;
+  --dia-3: #eab76f;
+  --dia-4: #d08b2e;
+  --dia-5: #a85d0b;
+
   --raio: 6px;
-  --largura: 52rem;
+  --largura: 74rem;
+  --largura-texto: 52rem;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -70,10 +84,12 @@ a:hover { color: var(--tinta); }
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
+  justify-content: space-between;
   gap: 0.5rem 1.5rem;
   padding-top: 0.9rem;
   padding-bottom: 0.9rem;
 }
+.topo-link { font-size: 0.95rem; }
 .marca {
   font-family: var(--fonte-titulo);
   font-weight: 700;
@@ -81,17 +97,94 @@ a:hover { color: var(--tinta); }
   color: var(--tinta);
   text-decoration: none;
 }
-.menu {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: 0.95rem;
+
+/* ---------------------------------------- página: barra lateral + conteúdo */
+
+.principal { min-width: 0; max-width: var(--largura-texto); }
+
+/* Celular: os segmentos viram uma faixa de pílulas que rola na horizontal. */
+.lateral {
+  margin: 0 -1rem;
+  padding: 0.75rem 1rem 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
-.menu a { color: var(--tinta-suave); text-decoration: none; }
-.menu a:hover { color: var(--verde); text-decoration: underline; }
+.lateral-titulo, .lateral-nichos { display: none; }
+.lateral-lista {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0 0 0.5rem;
+  list-style: none;
+  white-space: nowrap;
+}
+.lateral-lista a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--linha);
+  border-radius: 999px;
+  background: var(--superficie);
+  color: var(--tinta);
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+.lateral-lista a:hover { border-color: var(--verde); color: var(--verde); }
+.lateral-lista a[aria-current="page"] { border-color: var(--verde); background: var(--verde-fundo); color: var(--verde); font-weight: 700; }
+
+@media (min-width: 60rem) {
+  .pagina {
+    display: grid;
+    grid-template-columns: 13.5rem minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .principal { max-width: none; }
+  .lateral {
+    position: sticky;
+    top: 1rem;
+    margin: 0;
+    padding: 2.75rem 0 1rem;
+    overflow: visible;
+    max-height: calc(100vh - 1rem);
+    overflow-y: auto;
+  }
+  .lateral-titulo, .lateral-nichos { display: block; }
+  .lateral-titulo {
+    margin: 0 0 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--tinta-suave);
+  }
+  .lateral-nichos { margin-top: 1.75rem; }
+  .lateral-lista { display: grid; gap: 0.15rem; padding: 0; white-space: normal; }
+  .lateral-lista a {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    border: 0;
+    border-left: 3px solid transparent;
+    border-radius: 0 var(--raio) var(--raio) 0;
+    background: transparent;
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+  .lateral-lista a:hover { background: var(--superficie); border-left-color: var(--linha); }
+  .lateral-lista a[aria-current="page"] { border-left-color: var(--verde); background: var(--verde-fundo); }
+}
+
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 /* --------------------------------------------------------- abertura */
 
@@ -149,6 +242,115 @@ h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; }
 .pilulas a:hover, .estados a:hover { border-color: var(--verde); color: var(--verde); }
 .estados a { padding: 0.25rem 0.6rem; font-size: 0.9rem; }
 .conta { color: var(--tinta-suave); font-variant-numeric: tabular-nums; font-size: 0.85em; }
+
+/* ------------------------------------------------- painel: mapa + calendário */
+
+.painel {
+  display: grid;
+  gap: 2rem;
+  margin: 0.5rem 0 1rem;
+}
+@media (min-width: 48rem) {
+  .painel { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; }
+}
+.painel-titulo { margin: 0 0 0.5rem; font-size: 1rem; font-weight: 500; color: var(--tinta-suave); }
+.painel-nota { margin: -0.25rem 0 0.75rem; font-size: 0.9rem; color: var(--tinta-suave); }
+.painel-mais { margin: 0.75rem 0 0; font-size: 0.95rem; }
+.painel-mapa .estados { margin-top: 0.75rem; }
+
+.mapa { margin: 0; }
+.mapa svg { display: block; width: 100%; height: auto; max-height: 30rem; }
+.mapa .uf path {
+  fill: var(--mapa-0);
+  stroke: var(--papel);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  transition: fill 0.15s;
+}
+.mapa .nivel-1 path { fill: var(--mapa-1); }
+.mapa .nivel-2 path { fill: var(--mapa-2); }
+.mapa .nivel-3 path { fill: var(--mapa-3); }
+.mapa .nivel-4 path { fill: var(--mapa-4); }
+.mapa .nivel-5 path { fill: var(--mapa-5); }
+.mapa a.uf:hover path, .mapa a.uf:focus path { fill: var(--ambar); }
+.mapa a.uf:focus { outline: none; }
+.mapa a.uf:focus-visible path { stroke: var(--tinta); stroke-width: 2.5; }
+.mapa-rotulos text {
+  font-family: var(--fonte-texto);
+  font-size: 0.95px; /* unidades do viewBox (graus) */
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+  fill: var(--tinta);
+  pointer-events: none;
+}
+.mapa-rotulos .nivel-4, .mapa-rotulos .nivel-5 { fill: #fff; }
+
+.legenda {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--tinta-suave);
+}
+.legenda-titulo { font-weight: 700; }
+.legenda-item { display: inline-flex; align-items: center; gap: 0.3rem; font-variant-numeric: tabular-nums; }
+.legenda-cor { width: 0.85rem; height: 0.85rem; border-radius: 2px; background: var(--mapa-0); }
+.legenda-cor.nivel-1 { background: var(--mapa-1); }
+.legenda-cor.nivel-2 { background: var(--mapa-2); }
+.legenda-cor.nivel-3 { background: var(--mapa-3); }
+.legenda-cor.nivel-4 { background: var(--mapa-4); }
+.legenda-cor.nivel-5 { background: var(--mapa-5); }
+
+.calendario {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 3px;
+  font-variant-numeric: tabular-nums;
+}
+.calendario th { padding: 0 0 0.2rem; font-size: 0.78rem; font-weight: 500; color: var(--tinta-suave); }
+.dia {
+  height: 3.1rem;
+  padding: 0;
+  border-radius: 4px;
+  background: var(--superficie);
+  vertical-align: top;
+}
+.dia > .dia-numero, .dia a {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0.25rem 0.3rem;
+}
+.dia a { color: inherit; text-decoration: none; border-radius: 4px; }
+.dia a:hover { box-shadow: inset 0 0 0 2px var(--tinta); }
+.dia-numero { font-size: 0.78rem; color: var(--tinta-suave); white-space: nowrap; overflow: hidden; }
+.dia-conta { align-self: flex-end; font-family: var(--fonte-titulo); font-size: 1.05rem; font-weight: 700; line-height: 1; }
+.dia.nivel-1 { background: var(--dia-1); }
+.dia.nivel-2 { background: var(--dia-2); }
+.dia.nivel-3 { background: var(--dia-3); }
+.dia.nivel-4 { background: var(--dia-4); color: #fff; }
+.dia.nivel-5 { background: var(--dia-5); color: #fff; }
+.dia.nivel-4 .dia-numero, .dia.nivel-5 .dia-numero { color: #fff; }
+.dia-hoje { box-shadow: inset 0 0 0 2px var(--verde); }
+.dia-passado { opacity: 0.4; }
+.dia-fora { background: transparent; }
+
+.mes { margin: 1.5rem 0 0; }
+.mes-titulo { margin: 0 0 0.5rem; font-size: 1.2rem; }
+.mes .dia { height: 3.6rem; }
+
+.navegacao-dias {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1.5rem 0 0;
+  font-size: 0.95rem;
+}
 
 /* ----------------------------------------------------------- editais */
 
@@ -339,6 +541,9 @@ h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; }
 }
 
 @media (max-width: 30rem) {
+  .dia { height: 2.7rem; }
+  .mes .dia { height: 3rem; }
+  .dia-conta { font-size: 0.95rem; }
   .edital { grid-template-columns: 4.4rem 1fr; gap: 0.75rem; }
   .prazo-legenda { font-size: 0.75rem; }
   .prazo-numero { font-size: 1.6rem; }
