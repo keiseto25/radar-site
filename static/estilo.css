@@ -535,6 +535,19 @@ h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; }
   font-size: 0.9rem;
 }
 .rodape p { max-width: 70ch; margin: 0; }
+.rodape-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.texto { max-width: 68ch; padding: 1.5rem 0 1rem; }
+.texto h1 { margin: 0 0 1rem; font-size: clamp(1.75rem, 4.5vw, 2.5rem); }
+.texto h2 { margin: 2rem 0 0.5rem; font-size: 1.2rem; }
+.texto p, .texto li { margin: 0 0 0.75rem; }
 
 @media (min-width: 42rem) {
   .filtros { grid-template-columns: 1fr; }
