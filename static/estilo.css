@@ -524,6 +524,8 @@ h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; }
 .chamada .botao { background: var(--papel); color: var(--tinta); }
 .chamada .botao:hover { background: var(--verde-fundo); }
 .chamada-breve { font-style: italic; }
+/* Na página inicial, entre o painel e a lista: o banner é visto antes da rolagem longa. */
+.chamada-topo { margin: 2rem 0 0; }
 
 /* ----------------------------------------------------------- rodapé */
 
